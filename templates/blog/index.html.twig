@@ -7,7 +7,7 @@
     {% for article in articles %}
     <article class="p-5">
         <h2>{{ article.title }}</h2>
-        <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/y') }} {{ article.createdAt | date('h:i') }} dans la catégorie politique</div>
+        <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/y') }} {{ article.createdAt | date('h:i') }} dans la catégorie {{ article.category.title }}</div>
         <div class="content"><img src="{{ article.image }}" alt="">
             {{ article.content | raw }}
             <a href="{{ path('blog_show', {'id': article.id }) }}" class="btn btn-primary">lire la suite</a></div>
