@@ -3,8 +3,33 @@
 {% block body %}
 
     <h2>{{ article.title }}</h2>
-    <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/y') }} à {{ article.createdAt | date('H:i') }}</div>
+    <div class="metadata">Ecrit le {{ article.createdAt | date('d/m/y') }} à {{ article.createdAt | date('H:i') }} Dans la catégorie {{ article.category.title }}</div>
     <div class="content"><img src="{{ article.image }}" alt="">
         {{ article.content | raw }}
+
+    </div>
+    <section id="commentaires">
+        <h1>{{ article.comments| length }} commentaires :</h1>
+        {% for comment in article.comments %}
+            <div class="comment">
+                <div class="row">
+                    <div class="col-3">
+                        {{ comment.author }} (<small>{{ comment.createdAt | date('d/m/y a H:i') }}</small>)
+                    </div>
+                    <div class="col">
+                        {{ comment.content | raw }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="createComment">
+            {{ form_start(formComment) }}
+            {{ form_row(formComment.author) }}
+            {{ form_row(formComment.content) }}
+            <button type="submit" class="btn btn-primary">Commenter </button>
+            {{ form_end(formComment) }}
+
+        </div>
+    </section>
 
 {% endblock %}
