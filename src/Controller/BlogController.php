@@ -73,6 +73,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog/{id}", name="blog_show")
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function show(Article $article, Request $request, EntityManagerInterface $manager) {
 
