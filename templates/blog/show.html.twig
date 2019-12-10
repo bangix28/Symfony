@@ -22,6 +22,7 @@
                 </div>
             </div>
         {% endfor %}
+        {% if app.user %}
         <div class="createComment">
             {{ form_start(formComment) }}
             {{ form_row(formComment.author) }}
@@ -30,6 +31,12 @@
             {{ form_end(formComment) }}
 
         </div>
+        {% else %}
+        <h2>Vous devez vous connecter pour commenter un article</h2>
+                <a href="{{ path('security_login') }}" class="btn btn-danger" type="submit">Se connecter</a>
+
+            </form>
     </section>
+    {% endif %}
 
 {% endblock %}
