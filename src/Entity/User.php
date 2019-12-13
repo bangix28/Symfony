@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(
  *     fields={"email"},
- *     message="L'email que vous avez utiliser est déja utiliser"
+ *     message="Cette adresse email existe déja"
  * )
  */
 class User implements UserInterface
@@ -26,40 +26,34 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Email()
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string", length=255)
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="8", minMessage="Votre mot de passe doit faire minimum 8 charactères")
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="8", minMessage="Votre mot de passe doit faire au moin 8 caracteres")
+     *
      */
     private $password;
+
     /**
-     * @Assert\EqualTo(propertyPath="password", message="Vous n'avez pas taper le même mot de passe")
+     * @Assert\EqualTo(propertyPath="password", message="Les deux mot de passe doivent être identiques")
      */
     public $confirm_password;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $roles = [];
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
     }
 
     public function getUsername(): ?string
@@ -70,6 +64,18 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }
@@ -86,18 +92,25 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getRoles(): ?array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
     }
-
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
     }
 
-    public  function getRoles()
-    {
-        return ['ROLE_USER'];
-    }
 }
