@@ -27,6 +27,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $pass_hach = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($pass_hach);
+            $user->setRoles(['ROLES_USER']);
             $manager->persist($user);
             $manager->flush();
             return $this->redirectToRoute('security_login');
