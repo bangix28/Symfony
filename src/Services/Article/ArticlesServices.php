@@ -5,6 +5,7 @@ namespace App\Services\Article;
 
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\ArticleType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,16 +31,16 @@ class ArticlesServices extends AbstractController
             if (!$article->getId()) {
                 $article->setCreatedAt(new \DateTime());
             }
-            $this->formValidation($article);
+            $this->formValidation($comment);
             $form = true;
             return $form;
         }
         return $form;
     }
 
-    public function formValidation($article) {
+    public function formValidation($comment) {
 
-        $this->manager->persist($article);
+        $this->manager->persist($comment);
         $this->manager->flush();
 
 

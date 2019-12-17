@@ -8,6 +8,7 @@ use App\Form\ArticleType;
 use App\Form\CommentType;
 use App\Repository\ArticleRepository;
 use App\Services\Article\ArticlesServices;
+use App\Services\Article\CommentServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -47,7 +48,6 @@ class BlogController extends AbstractController
      * @throws \Exception
      */
     public function form(ArticlesServices $articlesServices, Request $request,Article $article = null) {
-
              if (!$article) {
                 $article = new Article();
             }
@@ -67,20 +67,13 @@ class BlogController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Exception
      */
-    public function show(Article $article, Request $request, EntityManagerInterface $manager) {
+    public function show(Article $article,Request $request ,CommentServices $commentServices) {
+        $comment = new Comment();
+        $form = $commentServices->formCreate($article, $request, $comment);
+            if ($form === true) {
 
-            $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-                $comment->setCreatedAt(new \DateTime())
-                        ->setArticle($article);
-
-            $manager->persist($comment);
-            $manager->flush();
-
-            return $this->redirectToRoute('blog_show', ['id' => $article->getId()]);
-        }
+                return $this->redirectToRoute('blog_show', ['id' => $article->getId()]);
+            }
         return $this->render('blog/show.html.twig', ['article' => $article, 'formComment' => $form->createView()]);
     }
 }
