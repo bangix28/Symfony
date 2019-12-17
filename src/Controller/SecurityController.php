@@ -20,6 +20,7 @@ class SecurityController extends AbstractController
 
         $form = $securityServices->formCreate($request);
         if ($form === true) {
+
             return $this->redirectToRoute('security_login');
         }
         return $this->render('security/registration.html.twig', [
